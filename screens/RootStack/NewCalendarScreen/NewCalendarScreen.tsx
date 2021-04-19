@@ -3,34 +3,31 @@ import { Platform, View } from "react-native";
 import { Appbar, TextInput, Snackbar, Button } from "react-native-paper";
 import { getFileObjectAsync } from "../../../Utils";
 
-// See https://github.com/mmazzarolo/react-native-modal-datetime-picker
-// Most of the date picker code is directly sourced from the example
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-
 // See https://docs.expo.io/versions/latest/sdk/imagepicker/
 // Most of the image picker code is directly sourced from the example
 import * as ImagePicker from "expo-image-picker";
-import { styles } from "./NewSocialScreen.styles";
+import { styles } from "./NewCalendarScreen.styles";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { SocialModel } from "../../../models/social";
+import { CalendarModel } from "../../../models/calendar";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackScreen";
 
 interface Props {
-  navigation: StackNavigationProp<RootStackParamList, "NewSocialScreen">;
+  navigation: StackNavigationProp<RootStackParamList, "NewCalendarScreen">;
 }
 
-export default function NewSocialScreen({ navigation }: Props) {
+export default function NewCalendarScreen({ navigation }: Props) {
   // Event details.
-  const [eventName, setEventName] = useState("");
-  const [eventDate, setEventDate] = useState<Date>();
-  const [eventLocation, setEventLocation] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
+
+  const [postedDate, setPostedDate] = useState("May 20, 2020");
+  const [caption, setCaption] = useState("");
+  const [calTitle, setCalTitle] = useState("");
   const [eventImage, setEventImage] = useState<string | undefined>(undefined);
-  // Date picker.
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+
+
   const [visible, setVisible] = useState(false);
   // Snackbar.
   const [message, setMessage] = useState("");
@@ -66,22 +63,6 @@ export default function NewSocialScreen({ navigation }: Props) {
     }
   };
 
-  // Code for DatePicker (from docs)
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  // Code for DatePicker (from docs)
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  // Code for DatePicker (from docs)
-  const handleConfirm = (date: Date) => {
-    date.setSeconds(0);
-    setEventDate(date);
-    hideDatePicker();
-  };
 
   // Code for SnackBar (from docs)
   const onDismissSnackBar = () => setVisible(false);
@@ -92,17 +73,11 @@ export default function NewSocialScreen({ navigation }: Props) {
 
   // This method is called AFTER all fields have been validated.
   const saveEvent = async () => {
-    if (!eventName) {
-      showError("Please enter an event name.");
+    if (!calTitle) {
+      showError("Please enter a Title.");
       return;
-    } else if (!eventDate) {
-      showError("Please choose an event date.");
-      return;
-    } else if (!eventLocation) {
-      showError("Please enter an event location.");
-      return;
-    } else if (!eventDescription) {
-      showError("Please enter an event description.");
+    } else if (!caption) {
+      showError("Please enter a caption.");
       return;
     } else if (!eventImage) {
       showError("Please choose an event image.");
@@ -116,30 +91,30 @@ export default function NewSocialScreen({ navigation }: Props) {
       // saved in eventImage to a file object.
       console.log("getting file object");
       const object: Blob = (await getFileObjectAsync(eventImage)) as Blob;
-      // Generate a brand new doc ID by calling .doc() on the socials node.
-      const socialRef = firebase.firestore().collection("socials").doc();
+      // Generate a brand new doc ID by calling .doc() on the calendarss node.
+      const calendarRef = firebase.firestore().collection("calendars").doc();
       console.log("putting file object");
       const result = await firebase
         .storage()
         .ref()
-        .child(socialRef.id + ".jpg")
+        .child(calendarRef.id + ".jpg")
         .put(object);
       console.log("getting download url");
       const downloadURL = await result.ref.getDownloadURL();
-      const doc: SocialModel = {
-        eventName: eventName,
-        eventDate: eventDate.getTime(),
-        eventLocation: eventLocation,
-        eventDescription: eventDescription,
-        eventImage: downloadURL,
+      const doc: CalendarModel = {
+        calImage: downloadURL,
+        calTitle: calTitle,
+        caption: caption,
+        id: "55555",
         owner: firebase.auth().currentUser!.uid,
-        interested: {},
+        postedDate: postedDate,
       };
       console.log("setting download url");
-      await socialRef.set(doc);
+      await calendarRef.set(doc);
       setLoading(false);
       navigation.goBack();
     } catch (error) {
+      console.log("Error: " + error.toString());
       setLoading(false);
       showError(error.toString());
     }
@@ -149,7 +124,7 @@ export default function NewSocialScreen({ navigation }: Props) {
     return (
       <Appbar.Header>
         <Appbar.Action onPress={navigation.goBack} icon="close" />
-        <Appbar.Content title="Socials" />
+        <Appbar.Content title="Calendars" />
       </Appbar.Header>
     );
   };
@@ -159,34 +134,20 @@ export default function NewSocialScreen({ navigation }: Props) {
       <Bar />
       <View style={{ ...styles.container, padding: 20 }}>
         <TextInput
-          label="Event Name"
-          value={eventName}
-          onChangeText={(name) => setEventName(name)}
+          label="Title"
+          value={calTitle}
+          onChangeText={(title) => setCalTitle(title)}
           style={{ backgroundColor: "white", marginBottom: 10 }}
         />
         <TextInput
-          label="Event Location"
-          value={eventLocation}
-          onChangeText={(location) => setEventLocation(location)}
+          label="Caption"
+          value={caption}
+          onChangeText={(caption) => setCaption(caption)}
           style={{ backgroundColor: "white", marginBottom: 10 }}
         />
-        <TextInput
-          label="Event Description"
-          value={eventDescription}
-          multiline={true}
-          onChangeText={(desc) => setEventDescription(desc)}
-          style={{ backgroundColor: "white", marginBottom: 10 }}
-        />
-        <Button
-          mode="outlined"
-          onPress={showDatePicker}
-          style={{ marginTop: 20 }}
-        >
-          {eventDate ? eventDate.toLocaleString() : "Choose a Date"}
-        </Button>
-
+        
         <Button mode="outlined" onPress={pickImage} style={{ marginTop: 20 }}>
-          {eventImage ? "Change Image" : "Pick an Image"}
+          {eventImage ? "Change Image" : "Upload an image of your schedule"}
         </Button>
         <Button
           mode="contained"
@@ -196,12 +157,6 @@ export default function NewSocialScreen({ navigation }: Props) {
         >
           Save Event
         </Button>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="datetime"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
         <Snackbar
           duration={3000}
           visible={visible}

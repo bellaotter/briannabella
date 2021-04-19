@@ -3,7 +3,7 @@ import { View, FlatList, Text } from "react-native";
 import { Appbar, Button, Card } from "react-native-paper";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { SocialModel } from "../../../../models/social.js";
+import { CalendarModel } from "../../../../models/calendar.js";
 import { styles } from "./FeedScreen.styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MainStackParamList } from "../MainStackScreen.js";
@@ -24,44 +24,47 @@ interface Props {
 }
 
 export default function FeedScreen({ navigation }: Props) {
-  // List of social objects
-  const [socials, setSocials] = useState<SocialModel[]>([]);
+  // List of calendar objects
+  const [calendars, setCalendars] = useState<CalendarModel[]>([]);
 
   const currentUserId = firebase.auth().currentUser!.uid;
 
   useEffect(() => {
     const db = firebase.firestore();
     const unsubscribe = db
-      .collection("socials")
-      .orderBy("eventDate", "asc")
+      .collection("calendars")
+      .orderBy("postedDate", "asc")
       .onSnapshot((querySnapshot) => {
-        var newSocials: SocialModel[] = [];
-        querySnapshot.forEach((social) => {
-          const newSocial = social.data() as SocialModel;
-          newSocial.id = social.id;
-          newSocials.push(newSocial);
+        console.log("It worked");
+        var newCalendars: CalendarModel[] = [];
+        querySnapshot.forEach((calendar) => {
+          const newCalendar = calendar.data() as CalendarModel;
+          newCalendar.id = calendar.id;
+          newCalendars.push(newCalendar);
         });
-        setSocials(newSocials);
+        setCalendars(newCalendars);
       });
     return unsubscribe;
   }, []);
 
-  const toggleInterested = (social: SocialModel) => {
-    if (!social.interested) {
-      social.interested = {};
+
+ /* 
+  const toggleInterested = (calendar: CalendarModel) => {
+    if (!calendar.interested) {
+      calendar.interested = {};
     }
-    if (social.interested[currentUserId]) {
-      social.interested[currentUserId] = false;
+    if (calendar.interested[currentUserId]) {
+      calendar.interested[currentUserId] = false;
     } else {
-      social.interested[currentUserId] = true;
+      calendar.interested[currentUserId] = true;
     }
 
     firebase
       .firestore()
-      .collection("socials")
-      .doc(social.id)
+      .collection("calendars")
+      .doc(calendar.id)
       .set({
-        ...social,
+        ...calendar,
         id: null,
       })
       .then(() => {})
@@ -69,12 +72,20 @@ export default function FeedScreen({ navigation }: Props) {
         console.log("Error writing node:", error);
       });
   };
-
-  const deleteSocial = (social: SocialModel) => {
-    firebase.firestore().collection("socials").doc(social.id).delete();
+  */
+  
+  const deleteCalendar = (calendar: CalendarModel) => {
+    firebase.firestore().collection("calendars").doc(calendar.id).delete();
   };
 
-  const renderSocial = ({ item }: { item: SocialModel }) => {
+  const isInterested = (calendar: CalendarModel) => {
+  return (true);
+  }
+  const toggleInterested = (calendar: CalendarModel) => {
+    return (true);
+    }
+
+  const renderCalendar = ({ item }: { item: CalendarModel }) => {
     const onPress = () => {
       navigation.navigate("DetailScreen", {
         social: item,
@@ -83,23 +94,19 @@ export default function FeedScreen({ navigation }: Props) {
 
     return (
       <Card onPress={onPress} style={{ margin: 16 }}>
-        <Card.Cover source={{ uri: item.eventImage }} />
+        <Card.Cover source={{ uri: item.calImage }} />
         <Card.Title
-          title={item.eventName}
-          subtitle={
-            item.eventLocation +
-            " • " +
-            new Date(item.eventDate).toLocaleString()
-          }
+          title={item.calTitle}
+          subtitle={item.caption}
         />
         <Card.Actions>
           <Button onPress={() => toggleInterested(item)}>
-            {item.interested && item.interested[currentUserId]
+            {isInterested(item)
               ? "♥ Liked"
               : "♡ Like"}
           </Button>
           {item.owner === currentUserId && (
-            <Button color="red" onPress={() => deleteSocial(item)}>
+            <Button color="red" onPress={() => deleteCalendar(item)}>
               {"Delete"}
             </Button>
           )}
@@ -115,11 +122,11 @@ export default function FeedScreen({ navigation }: Props) {
           icon="exit-to-app"
           onPress={() => firebase.auth().signOut()}
         />
-        <Appbar.Content title="Socials" />
+        <Appbar.Content title="Calendar" />
         <Appbar.Action
           icon="plus"
           onPress={() => {
-            navigation.navigate("NewSocialScreen");
+            navigation.navigate("NewCalendarScreen");
           }}
         />
       </Appbar.Header>
@@ -131,7 +138,7 @@ export default function FeedScreen({ navigation }: Props) {
       <View>
         <Text style={{ color: "gray", margin: 30, textAlign: "center" }}>
           {
-            "Welcome! To get started, use the plus button in the top-right corner to create a new social."
+            "Welcome! To get started, use the plus button in the top-right corner to create a new calendar."
           }
         </Text>
       </View>
@@ -143,8 +150,8 @@ export default function FeedScreen({ navigation }: Props) {
       <Bar />
       <View style={styles.container}>
         <FlatList
-          data={socials}
-          renderItem={renderSocial}
+          data={calendars}
+          renderItem={renderCalendar}
           keyExtractor={(_, index) => "key-" + index}
           ListEmptyComponent={ListEmptyComponent}
         />

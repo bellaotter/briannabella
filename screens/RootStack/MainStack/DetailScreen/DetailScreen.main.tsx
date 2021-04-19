@@ -12,13 +12,13 @@ interface Props {
 }
 
 export default function DetailScreen({ route, navigation }: Props) {
-  const { social } = route.params;
+  const calendar = route.params.social;
 
   const Bar = () => {
     return (
       <Appbar.Header>
         <Appbar.BackAction onPress={() => navigation.navigate("FeedScreen")} />
-        <Appbar.Content title="Socials" />
+        <Appbar.Content title="Calendar" />
       </Appbar.Header>
     );
   };
@@ -28,17 +28,15 @@ export default function DetailScreen({ route, navigation }: Props) {
       <Bar />
       <ScrollView style={styles.container}>
         <View style={styles.view}>
-          <Image style={styles.image} source={{ uri: social.eventImage }} />
+          <Image style={styles.image} source={{ uri: calendar.calImage }} />
           <Text style={{ ...styles.h1, marginVertical: 10 }}>
-            {social.eventName}
+            {calendar.calTitle}
           </Text>
-          <Text style={{ ...styles.subtitle, marginBottom: 5 }}>
-            {social.eventLocation}
-          </Text>
+      
           <Text style={{ ...styles.subtitle, marginTop: 5, marginBottom: 20 }}>
-            {new Date(social.eventDate).toLocaleString()}
+            {calendar.postedDate}
           </Text>
-          <Text style={styles.body}>{social.eventDescription}</Text>
+          <Text style={styles.body}>{calendar.caption}</Text>
         </View>
       </ScrollView>
     </>
