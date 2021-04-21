@@ -117,7 +117,7 @@ export default function FeedScreen({ navigation }: Props) {
 
   const Bar = () => {
     return (
-      <Appbar.Header>
+      <Appbar.Header style = {styles.header}>
         <Appbar.Action
           icon="exit-to-app"
           onPress={() => firebase.auth().signOut()}
