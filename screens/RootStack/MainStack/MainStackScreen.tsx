@@ -2,12 +2,12 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import FeedScreen from "./FeedScreen/FeedScreen.main";
 import DetailScreen from "./DetailScreen/DetailScreen.main";
-import { SocialModel } from "../../../models/calendar";
+import { CalendarModel } from "../../../models/calendar";
 
 export type MainStackParamList = {
   FeedScreen: undefined;
-  DetailScreen: { social: SocialModel };
-  NewSocialScreen: undefined;
+  DetailScreen: { social: CalendarModel };
+  NewCalendarScreen: undefined;
 };
 
 const MainStack = createStackNavigator<MainStackParamList>();

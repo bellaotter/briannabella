@@ -93,14 +93,14 @@ export default function FeedScreen({ navigation }: Props) {
     };
 
     return (
-      <Card onPress={onPress} style={{ margin: 16 }}>
+      <Card onPress={onPress} style={{ margin: 16, borderRadius: 15, backgroundColor: '#DDD5C7' }}>
         <Card.Cover source={{ uri: item.calImage }} />
         <Card.Title
           title={item.calTitle}
           subtitle={item.caption}
         />
         <Card.Actions>
-          <Button onPress={() => toggleInterested(item)}>
+          <Button onPress={() => toggleInterested(item)} color="#C4820E">
             {isInterested(item)
               ? "♥ Liked"
               : "♡ Like"}

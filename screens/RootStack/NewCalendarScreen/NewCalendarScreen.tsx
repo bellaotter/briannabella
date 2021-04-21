@@ -122,7 +122,7 @@ export default function NewCalendarScreen({ navigation }: Props) {
 
   const Bar = () => {
     return (
-      <Appbar.Header>
+      <Appbar.Header style = {{backgroundColor: '#003262'}}>
         <Appbar.Action onPress={navigation.goBack} icon="close" />
         <Appbar.Content title="Calendars" />
       </Appbar.Header>
@@ -146,14 +146,18 @@ export default function NewCalendarScreen({ navigation }: Props) {
           style={{ backgroundColor: "white", marginBottom: 10 }}
         />
         
-        <Button mode="outlined" onPress={pickImage} style={{ marginTop: 20 }}>
+        <Button mode="outlined" onPress={pickImage} 
+          color = '#003262'
+          style={{ marginTop: 20, borderRadius: 15, backgroundColor: '#FDB515', marginBottom:10 }}>
           {eventImage ? "Change Image" : "Upload an image of your schedule"}
         </Button>
         <Button
           mode="contained"
           onPress={saveEvent}
-          style={{ marginTop: 20 }}
+          color = '#003262'
+          style={{ marginTop: 20, borderRadius: 15, backgroundColor: '#FDB515', marginBottom:10 }}
           loading={loading}
+          
         >
           Save Event
         </Button>

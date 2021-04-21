@@ -16,7 +16,7 @@ export default function DetailScreen({ route, navigation }: Props) {
 
   const Bar = () => {
     return (
-      <Appbar.Header>
+      <Appbar.Header style = {styles.header}>
         <Appbar.BackAction onPress={() => navigation.navigate("FeedScreen")} />
         <Appbar.Content title="Calendar" />
       </Appbar.Header>
@@ -37,6 +37,7 @@ export default function DetailScreen({ route, navigation }: Props) {
             {calendar.postedDate}
           </Text>
           <Text style={styles.body}>{calendar.caption}</Text>
+          <Text style = {styles.texting}>Go Bears</Text>
         </View>
       </ScrollView>
     </>

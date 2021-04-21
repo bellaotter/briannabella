@@ -47,7 +47,7 @@ export default function SignUpScreen({ navigation }: Props) {
 
   return (
     <>
-      <Appbar.Header dark={true}>
+      <Appbar.Header dark={true} style = {styles.header}>
         <Appbar.Content title="Create an Account" />
       </Appbar.Header>
       <SafeAreaView style={styles.container}>
@@ -72,7 +72,7 @@ export default function SignUpScreen({ navigation }: Props) {
           <Button
             mode="contained"
             onPress={signUp}
-            style={{ marginTop: 20 }}
+            style={{ marginTop: 20, borderRadius:13, backgroundColor: '#FDB515' }}
             loading={loading}
             dark={true}
           >
@@ -81,6 +81,7 @@ export default function SignUpScreen({ navigation }: Props) {
           <Button
             onPress={() => navigation.navigate("SignInScreen")}
             style={{ marginTop: 20 }}
+            color = '#003262'
           >
             OR, SIGN IN INSTEAD
           </Button>
@@ -99,4 +100,9 @@ const styles = StyleSheet.create({
     padding: 32,
     backgroundColor: "#ffffff",
   },
+  header: {
+    backgroundColor: '#003262',
+    fontWeight: "bold",
+    fontSize: 30,
+  }
 });
