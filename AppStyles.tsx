@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 export const COLOR_PRIMARY = "#0984e3";
 export const COLOR_ACCENT = "#dfe6e9";
 export const COLOR_LIGHT = "#dfe6e9";
-export const COLOR_DARK = "#2d3436";
+export const COLOR_DARK = "#C4C4C4";
 export const COLOR_BACKGROUND = "#ffffff";
 
 export const AppStyles = StyleSheet.create({
@@ -24,4 +24,8 @@ export const AppStyles = StyleSheet.create({
   body: {
     fontSize: 14,
   },
+  header: {
+    backgroundColor: '#C4C4C4'
+  }
+
 });

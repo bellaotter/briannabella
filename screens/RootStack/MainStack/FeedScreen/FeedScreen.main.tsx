@@ -93,12 +93,14 @@ export default function FeedScreen({ navigation }: Props) {
     };
 
     return (
-      <Card onPress={onPress} style={{ margin: 16, borderRadius: 15, backgroundColor: '#DDD5C7' }}>
-        <Card.Cover source={{ uri: item.calImage }} />
+      <Card onPress={onPress} style={ styles.card }>
         <Card.Title
           title={item.calTitle}
           subtitle={item.caption}
+
         />
+        <Card.Cover source={{ uri: item.calImage }} style={styles.cover} />
+        
         <Card.Actions>
           <Button onPress={() => toggleInterested(item)} color="#C4820E">
             {isInterested(item)
@@ -122,7 +124,7 @@ export default function FeedScreen({ navigation }: Props) {
           icon="exit-to-app"
           onPress={() => firebase.auth().signOut()}
         />
-        <Appbar.Content title="Calendar" />
+        <Appbar.Content title="RateMySchedule"/>
         <Appbar.Action
           icon="plus"
           onPress={() => {

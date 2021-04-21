@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
-import { Appbar, TextInput, Snackbar, Button } from "react-native-paper";
+import { Text, Appbar, TextInput, Snackbar, Button } from "react-native-paper";
 import { AuthStackParamList } from "./AuthStackScreen";
 import firebase from "firebase";
 
@@ -68,32 +68,70 @@ export default function SignInScreen({ navigation }: Props) {
 
   return (
     <>
-      <Appbar.Header dark={true} style={styles.header}>
-        <Appbar.Content title="Sign In" />
-      </Appbar.Header>
       <SafeAreaView style={styles.container}>
         <ScrollView
           style={styles.container}
           keyboardShouldPersistTaps="never"
           alwaysBounceVertical={false}
         >
+
+          <Text style={{marginTop: 60, marginBottom: 30, textAlign: 'center', fontSize: 30, fontFamily: 'American Typewriter'}}>
+            RateMySchedule
+          </Text>
+
+          <Text style={ {fontFamily: "American Typewriter", fontStyle: 'normal', fontWeight:'400', fontSize: 17, marginTop: 15, marginBottom: 2} }>
+          Email:
+          </Text>
+
           <TextInput
-            label="Email"
             value={userEmail}
             onChangeText={(text) => setUserEmail(text)}
-            style={{ backgroundColor: "white", marginBottom: 10 }}
+            style={{  backgroundColor: '#FFFFFF',
+            height: 50,
+            marginTop: 10,
+            marginBottom: 15,
+            alignContent: 'center',
+            borderRadius: 15,
+            borderTopEndRadius: 15,
+            borderTopLeftRadius: 15,
+            borderWidth: 1, 
+            borderStyle: 'solid',
+            borderColor: '#D0D4D9',}}
           />
+
+<         Text style={ {fontFamily: "American Typewriter", fontStyle: 'normal', fontWeight:'400', fontSize: 17, marginTop: 20, marginBottom: 2} }>
+          Password:
+          </Text>
+
           <TextInput
-            label="Password"
             value={userPassword}
             secureTextEntry={true}
             onChangeText={(text) => setUserPassword(text)}
-            style={{ backgroundColor: "white", marginBottom: 10 }}
+            style={{  backgroundColor: '#FFFFFF',
+            height: 50,
+            marginTop: 10,
+            marginBottom: 15,
+            alignContent: 'center',
+            borderRadius: 15,
+            borderTopEndRadius: 15,
+            borderTopLeftRadius: 15,
+            borderWidth: 1, 
+            borderStyle: 'solid',
+            borderColor: '#D0D4D9', }}
           />
           <Button
             mode="contained"
             onPress={signIn}
-            style={{ marginTop: 20, borderRadius:13, backgroundColor: '#FDB515' }}
+            style={{ marginTop: 20, 
+              width: 300,
+              alignSelf: 'center',
+              borderColor: 'black',
+              borderWidth: 1,
+              shadowColor: 'black',
+              shadowRadius: 8,
+              shadowOffset: {width: 5, height: 10},
+              backgroundColor: '#C4C4C4', 
+              marginBottom: 20 }}
             loading={loading}
             dark={true}
           >

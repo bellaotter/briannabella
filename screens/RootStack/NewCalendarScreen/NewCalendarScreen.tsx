@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Platform, View } from "react-native";
-import { Appbar, TextInput, Snackbar, Button } from "react-native-paper";
+import { Text, Appbar, TextInput, Snackbar, Button } from "react-native-paper";
 import { getFileObjectAsync } from "../../../Utils";
 
 // See https://docs.expo.io/versions/latest/sdk/imagepicker/
@@ -122,9 +122,9 @@ export default function NewCalendarScreen({ navigation }: Props) {
 
   const Bar = () => {
     return (
-      <Appbar.Header style = {{backgroundColor: '#003262'}}>
+      <Appbar.Header style = {{backgroundColor: '#C4C4C4'}}>
         <Appbar.Action onPress={navigation.goBack} icon="close" />
-        <Appbar.Content title="Calendars" />
+        <Appbar.Content title="New Schedule" />
       </Appbar.Header>
     );
   };
@@ -133,29 +133,36 @@ export default function NewCalendarScreen({ navigation }: Props) {
     <>
       <Bar />
       <View style={{ ...styles.container, padding: 20 }}>
+        <Text style={ styles.Text }>
+          Title:
+        </Text>
         <TextInput
-          label="Title"
           value={calTitle}
           onChangeText={(title) => setCalTitle(title)}
-          style={{ backgroundColor: "white", marginBottom: 10 }}
+          style={styles.inputBar}
         />
+        <Text style={ styles.Text }>
+          Caption:
+        </Text>
         <TextInput
-          label="Caption"
+  
           value={caption}
+    
           onChangeText={(caption) => setCaption(caption)}
-          style={{ backgroundColor: "white", marginBottom: 10 }}
+          style={styles.inputBar}
         />
         
-        <Button mode="outlined" onPress={pickImage} 
+        <Button mode="contained" onPress={pickImage} 
           color = '#003262'
-          style={{ marginTop: 20, borderRadius: 15, backgroundColor: '#FDB515', marginBottom:10 }}>
+          style={ styles.Button }>
           {eventImage ? "Change Image" : "Upload an image of your schedule"}
         </Button>
+
         <Button
           mode="contained"
           onPress={saveEvent}
           color = '#003262'
-          style={{ marginTop: 20, borderRadius: 15, backgroundColor: '#FDB515', marginBottom:10 }}
+          style={ styles.Button }
           loading={loading}
           
         >

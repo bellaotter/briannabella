@@ -14,10 +14,9 @@ export const styles = StyleSheet.create({
   image: {
     height: 200,
     width: "100%",
-    marginBottom: 20,
   },
   header: {
-    backgroundColor: '#003262',
+    backgroundColor: '#C4C4C4',
   },
   texting: {
     color: '#FDB515',
